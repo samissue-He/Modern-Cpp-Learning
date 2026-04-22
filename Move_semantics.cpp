@@ -1,0 +1,56 @@
+#include <iostream>
+#include <memory>
+#include <utility> // move, pair, swap, *forward -> handle vari rvalue & lvalue
+
+// Class template(Move semantics)
+template <typename T>
+class resourcemanager{
+    private:
+        std::unique_ptr<T> ptr;
+    
+    public:
+        explicit resourcemanager(std::unique_ptr<T> resource)
+            :ptr(std::move(resource)){
+                std::cout << "Resource";
+            }
+        ~resourcemanager() = default;
+
+        // Move struct/assignment func
+        resourcemanager(resourcemanager && other ) noexcept = default;
+        resourcemanager& operator=(resourcemanager && other) noexcept = default;
+
+        // Copy struct/assignment func
+        resourcemanager(resourcemanager & other) noexcept = delete;
+        resourcemanager& operator=(resourcemanager & other) noexcept = delete;
+
+        // business api
+        void process(){
+            if(ptr){
+                std::cout << "";
+                execute();
+            }
+            
+        }
+        void execute(){
+            if(ptr){
+                ptr -> process(); // Use child class's api (if exists)
+            }
+        }
+
+        // Provide visit api
+        T* get() const {return ptr.get();}
+};
+
+struct algorithm{
+    void process(){
+        std::cout << "Hello" << std::endl;
+    }
+    ~algorithm() = default;
+};
+
+int main(){
+    std::unique_ptr<algorithm> myal;
+    // Transfer to resource class's ptr
+    resourcemanager<algorithm> manager(std::move(myal));
+    manager.process();
+}
