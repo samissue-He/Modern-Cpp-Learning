@@ -10,7 +10,7 @@ struct BufferClass
 };
 struct SomeDataSource
 {
-    bool readIntobuffer(BufferClass &buffer)
+    bool readIntobuffer(BufferClass& buffer)
     {
         return true;
     };
@@ -43,7 +43,7 @@ struct SomeClass
 };
 void SomeClass::fnn()
 {
-    auto worker{std::jthread{[] { /* do something*/ }}};
+    auto worker{std::jthread{[](){ /* do something*/ }}};
 }
 
 void doss(){};

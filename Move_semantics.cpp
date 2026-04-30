@@ -16,11 +16,11 @@ class resourcemanager{
         ~resourcemanager() = default;
 
         // Move struct/assignment func
-        resourcemanager(resourcemanager && other ) noexcept = default;
+        resourcemanager(resourcemanager && other ) noexcept = default;  // rvalues
         resourcemanager& operator=(resourcemanager && other) noexcept = default;
 
         // Copy struct/assignment func
-        resourcemanager(resourcemanager & other) noexcept = delete;
+        resourcemanager(resourcemanager & other) noexcept = delete;  // lvalues
         resourcemanager& operator=(resourcemanager & other) noexcept = delete;
 
         // business api
