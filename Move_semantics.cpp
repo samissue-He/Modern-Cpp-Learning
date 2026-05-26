@@ -1,6 +1,25 @@
 #include <iostream>
 #include <memory>
-#include <utility> // move, pair, swap, *forward -> handle vari rvalue & lvalue
+#include <utility> // move, pair, swap, exchange, *forward -> handle vari rvalue & lvalue
+
+/*
+std::pair<int, double> get_market_data() {
+    return {1024, 99.85}; 
+}
+int main() {
+    // C++17 
+    auto [id, price] = get_market_data();
+*/
+
+/*
+struct Node {
+    int* data;
+
+    Node(Node&& other) noexcept 
+        // other.data = data， other.data = nullptr
+        : data(std::exchange(other.data, nullptr)) {} 
+};
+*/
 
 // Class template(Move semantics)
 template <typename T>

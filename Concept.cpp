@@ -3,7 +3,7 @@
 #include <concepts>
 #include <vector>
 #include <memory>
-#include <type_traits>
+#include <type_traits> // A library for determining types
 #include <string>
 
 // The first usage of concept
@@ -58,10 +58,10 @@ class wrapper
 public:
     wrapper(T val)
         : val_(val) {};
-    T operator*()
+    T operator*() 
         requires std::is_pointer_v<T>
     {
-        return val_;
+        return val_; // Return naked pointer
     }
 };
 
@@ -95,7 +95,7 @@ void print_ints(const std::ranges::range auto &r)
     }
 }
 
-// Concept and CRTP
+// Concept and CRTP !!!
 // Son classed derives its class' types to its father class
 // Father class can use son class's api in compile time and deduct new func
 template<class D>
@@ -117,6 +117,32 @@ template<std::input_iterator V, std::indirect_unary_predicate<std::ranges::itera
 requires std::ranges::view<V> && std::is_object_v<Pred>
 class filter_view : public view_interface<filter_view<V, Pred>>{};
 
+// Easy template
+template <typename D>
+class Base {
+public:
+    void say_hello() {
+        static_cast<D*>(this)->implementation();
+    }
+
+    void implementation() {
+        std::cout << "Default implementation in Base" << std::endl;
+    }
+};
+
+class Derived : public Base<Derived> {
+public:
+    void implementation() {
+        std::cout << "Custom implementation in Derived!" << std::endl;
+    }
+};
+
+int main() {
+    Derived d;
+    d.say_hello(); // output：Custom implementation in Derived!
+    return 0;
+}
+
 
 int main()
 {
@@ -128,7 +154,7 @@ int main()
     const io::printable auto upm{std::make_unique<my_type>()};
     upm->print(std::cout);
 
-    auto wi{std::make_unique<wrapper<int>>(1)};
+    auto wi{std::make_unique<wrapper<int>>(1)}; 
     std::cout << wi.get() << std::endl;
 
     vec<my_type> vp{}; // The same as std::vector<my_type>

@@ -59,7 +59,7 @@ using cfile = std::unique_ptr<FILE, file_closer>; // The second parameter can be
 using pcfile = std::unique_ptr<FILE, decltype([](FILE* fp){fclose(fp);})>;
 
 auto make_cfile(char const* filename, char const* mode){
-    FILE* stream{fopen(filename,mode)};
+    FILE* stream{fopen(filename, mode)};
     if(not stream){
         throw std::runtime_error("Failed to open file");
     }
@@ -101,7 +101,7 @@ int main()
     std::cout << *ptr1 << std::endl;
     std::shared_ptr<float> ptr2{std::move(ptr1)}; // Data type "unique_ptr"
     std::cout << *ptr2 << std::endl;
-    std::cout << (ptr1 == nullptr ? "correct" : "incorrect") << std::endl;
+    std::cout << (ptr1 == nullptr ? "ptr1 is null" : "ptr1 is not null") << std::endl;
 
     return 0;
 }
